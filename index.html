@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html lang="en" prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <title>Title</title>
+        <meta name="description" content="Description" />
+        <meta name="keywords" content="Keyword" />
+
+        <meta property="og:title" content="Title">
+        <meta property="og:description" content="Description">
+        <meta property="og:image" content=" ">
+        <meta property="og:url" content=" ">
+        <meta name="twitter:card" content="summary_large_image">
+
+        <link href="./css/style.css" rel="stylesheet" />
+    </head>
+
+    <body>
+
+        <header>
+            <h1>Spoon balance</h1>
+        </header>
+
+        <main>
+            <form>
+                <fieldset>
+                    <label for= "input-description">
+                        Enter description:
+                    </label>
+                    <input type="text" id="input-description" name="input-description" placeholder="Laid on a hammock" required>
+                </fieldset>
+    
+                <fieldset>
+                    <label for= "input-amount">
+                        Enter amount:
+                    </label>
+                    <input type="text" id="input-amount" name="input-amount" placeholder="10" required>
+                </fieldset>
+    
+                <fieldset>
+                    <legend>Select impact:</legend>
+    
+                    <div class="radio">
+                        <input type="radio" id="input-impact-gained" name="input-impact" value="gained" checked>
+                        <label for= "input-impact-gained">
+                            gained
+                        </label>
+                    </div>
+    
+                    <div class="radio">
+                        <input type="radio" id="input-impact-spent" name="input-impact" value="spent">
+                        <label for= "input-impact-spent">
+                            spent
+                        </label>
+                    </div>
+                </fieldset>
+    
+                <button type="submit">
+                    Add
+                </button>
+    
+                <button type="reset">
+                    Reset
+                </button>
+            </form>
+
+            <section class="gained-section">
+                <h2>
+                    Spoons gained
+                </h2>
+
+                <table id="gained-table">
+                    <tr>
+                        <th>Activity</th>
+                        <th>Spoons</th>
+                        <th>Added on</th>
+                    </tr>
+                </table>
+
+            </section>
+
+            <section class="spent-section">
+                <h2>
+                    Spoons spent
+                </h2>
+
+                <table id="spent-table">
+                    <tr>
+                        <th>Activity</th>
+                        <th>Spoons</th>
+                        <th>Added on</th>
+                    </tr>
+                </table>
+
+            </section>
+
+            <section class="balance-section">
+                <h2>
+                    Spoon balance
+                </h2>
+
+            </section>
+
+        </main>
+
+        <footer>
+
+        </footer>
+
+        <script src="./js/script.js"></script>
+    </body>
+</html>
