@@ -8,7 +8,7 @@ Performing any activity uses up spoons, which can only be replenished through re
 
 ## Demo
 
-Coming soon.
+https://xurxe.github.io/Integrify-14-spoon-balance/
 
 ## Author
 

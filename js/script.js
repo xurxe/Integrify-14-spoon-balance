@@ -38,11 +38,22 @@ const spoonieAccount = {
         return `${day}/${month}/${year} ${hour}:${minute}`
     },
 
-    addEntry: function(description, amount, impact) {
-        this.impact.push({description: description, amount: amount, added: this.displayCurrentDateTime()});
+    createEntry: function(description, amount) {
+        entry = {description: description, amount: amount, added: this.displayCurrentDateTime()}
+        return entry;
+    },
+
+    addGained: function(entry) {
+        this.gained.push(entry);
+    },
+
+    addSpent: function(entry) {
+        this.spent.push(entry);
     },
 
     gainedTotalCalculate: function() {
+        this.gainedTotal = 0;
+
         for (let i = 0; i < this.gained.length; i++) {
             this.gainedTotal += this.gained[i].amount;
         }
@@ -50,15 +61,17 @@ const spoonieAccount = {
     },
 
     spentTotalCalculate: function() {
+        this.spentTotal = 0;
+
         for (let i = 0; i < this.spent.length; i++) {
             this.spentTotal += this.spent[i].amount;
         }
         return this.spentTotal;
     },
 
-    calculateSpoonBalance: function() {
-        let spoonBalance = this.gainedTotal - this.totalExpenses;
-        return spoonBalance;
+    balanceCalculate: function() {
+        let balance = this.gainedTotal - this.spentTotal;
+        return balance;
     },
 };
 
@@ -66,37 +79,53 @@ const spoonieAccount = {
 
 /* SELECTORS *************************************************************** */
 
-const inputDescription = document.querySelector('#input-description');
-const inputAmount = document.querySelector('#input-amount');
-const buttonSubmit = document.querySelector('button[type="submit"]');
-const buttonReset = document.querySelector('button[type="reset"]');
-const gainedSection = document.querySelector('.gained-section');
-const spentSection = document.querySelector('.spent-section');
-const balanceSection = document.querySelector('.balance-section');
+const descriptionInput = document.querySelector('#description-input');
+const amountInput = document.querySelector('#amount-input');
+const addButton = document.querySelector('#add-button');
+const resetButton = document.querySelector('#reset-button');
+
+const gainedSection = document.querySelector('#gained-section');
 const gainedTable = document.querySelector('#gained-table');
+
+const spentSection = document.querySelector('#spent-section');
 const spentTable = document.querySelector('#spent-table');
 
+const balanceSection = document.querySelector('#balance-section');
+const balanceTr = document.querySelector('#balance-tr');
+console.log(balanceTr);
 
 
 /* FUNCTIONS *************************************************************** */
 
-function getCheckedValue() {
-    const inputImpact = document.querySelector('input[name="input-impact"]:checked');
-    const impact = inputImpact.value;
+function getImpact() {
+    const impactInput = document.querySelector('input[name="impact-input"]:checked');
+    const impact = parseInt(impactInput.value);
     return impact;
 }
 
 
+
 /* EVENT LISTENERS */
 
-buttonSubmit.addEventListener('click', function() {
-    const impact = getCheckedValue();
-/*     const description = inputDescription.value;
-    const amount = parseInt(inputAmount.value);
-    const newEntry = spoonieAccount.addEntry(description, amount, impact);
-    generateTableRow(impact, newEntry); */
+addButton.addEventListener('click', function() {
+    const impact = getImpact();
 
     console.log(impact);
+    const description = descriptionInput.value;
+    const amount = parseInt(amountInput.value);
+    let newEntry = spoonieAccount.createEntry(description, amount);
+
+    if (impact === 1) {
+        spoonieAccount.addGained(newEntry);
+    }
+
+    else if (impact === -1) {
+        spoonieAccount.addSpent(newEntry);
+    };
+
+    generateTableRow(impact, newEntry);
+
+    generateBalance();
 
     return true;
 });
@@ -105,7 +134,7 @@ buttonSubmit.addEventListener('click', function() {
 
 /* EXECUTION ************************************************************** */
 
-/* function generateTableData(entry) {
+function generateTableData(entry) {
     tableData =
     `<td>${entry.description}</td>
     <td>${entry.amount}</td>
@@ -114,24 +143,54 @@ buttonSubmit.addEventListener('click', function() {
     return tableData;
 };
 
+
+
 function generateTableRow(impact, entry) {
-    const table = document.querySelector('#' + impact + '-table');
-    const tableData = generateTableRow(entry);
+    let table;
+
+    if (impact === 1) {
+        table = document.querySelector('#gained-table');
+    }
+
+    else if (impact === -1) {
+        table = document.querySelector('#spent-table');
+    };
+
     const tableRow = document.createElement('tr');
     table.appendChild(tableRow);
+    const tableData = generateTableData(entry);
     tableRow.innerHTML = tableData;
-    return true;
-}; */
 
-/* function initialize() {
+    return true;
+};
+
+
+
+function generateBalance() {
+    gainedTotal = spoonieAccount.gainedTotalCalculate();
+    spentTotal = spoonieAccount.spentTotalCalculate();
+    balance = spoonieAccount.balanceCalculate();
+    balanceTr.innerHTML =
+    `<td>${gainedTotal}</td>
+    <td>-</td>
+    <td>${spentTotal}</td>
+    <td>=</td>
+    <td>${balance}</td>`;
+    return true;
+};
+
+
+function initialize() {
     for (i = 0; i < spoonieAccount.gained.length; i++) {
-        generateTableRow("gained", spoonieAccount.gained[i]);
+        generateTableRow(1, spoonieAccount.gained[i]);
     };
 
     for (i = 0; i < spoonieAccount.spent.length; i++) {
-        generateTableRow("spent", spoonieAccount.spent[i]);
+        generateTableRow(-1, spoonieAccount.spent[i]);
     };
+
+    generateBalance();
 };
 
-initialize(); */
+initialize();
 
