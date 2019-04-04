@@ -105,7 +105,7 @@ function getImpact() {
 
 
 
-/* EVENT LISTENERS */
+/* EVENT LISTENERS ********************************************************* */
 
 addButton.addEventListener('click', function() {
     const impact = getImpact();

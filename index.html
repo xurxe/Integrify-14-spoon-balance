@@ -6,16 +6,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        <title>Title</title>
-        <meta name="description" content="Description" />
+        <title>Spoon Balance</title>
+        <meta name="description" content="a spoonie tracker for chronic illness and disability" />
         <meta name="keywords" content="Keyword" />
 
-        <meta property="og:title" content="Title">
-        <meta property="og:description" content="Description">
+        <meta property="og:title" content="Spoon Balance">
+        <meta property="og:description" content="a spoonie tracker for chronic illness and disability">
         <meta property="og:image" content=" ">
         <meta property="og:url" content=" ">
         <meta name="twitter:card" content="summary_large_image">
 
+        <link href="https://fonts.googleapis.com/css?family=Comfortaa|Work+Sans" rel="stylesheet">
         <link href="./css/style.css" rel="stylesheet" />
     </head>
 
@@ -23,21 +24,21 @@
 
         <header>
             <h1>Spoon Balance</h1>
-            <h2>a spoon tracker for chronic illness and disability</h2>
+            <h2>a&nbsp;spoonie&nbsp;tracker&nbsp;for chronic&nbsp;illness&nbsp;and&nbsp;disability</h2>
         </header>
 
         <main>
             <form>
                 <fieldset>
                     <label for="description-input">
-                        Enter description:
+                        Enter activity description:
                     </label>
                     <input type="text" id="description-input" name="description-input" placeholder="Laid on a hammock" required>
                 </fieldset>
     
                 <fieldset>
                     <label for="amount-input">
-                        Enter amount:
+                        Enter spoon amount:
                     </label>
                     <input type="text" id="amount-input" name="amount-input" placeholder="10" required>
                 </fieldset>
@@ -45,14 +46,14 @@
                 <fieldset>
                     <legend>Select impact:</legend>
     
-                    <div class="radio">
+                    <div class="radio-div">
                         <input type="radio" id="impact-input-gained" name="impact-input" value="1" checked>
                         <label for= "impact-input-gained">
                             gained
                         </label>
                     </div>
     
-                    <div class="radio">
+                    <div class="radio-div">
                         <input type="radio" id="impact-input-spent" name="impact-input" value="-1">
                         <label for= "impact-input-spent">
                             spent
@@ -60,40 +61,43 @@
                     </div>
                 </fieldset>
     
-                <input type="button" id="add-button" value="Add">
-                <input type="button" id="reset-button" value="Reset">
-
+                <fieldset>
+                    <input type="button" id="add-button" value="Add">
+                    <input type="button" id="reset-button" value="Reset">
+                </fieldset>
             </form>
 
-            <section id="gained-section">
-                <h3>
-                    Gained
-                </h3>
-
-                <table id="gained-table">
-                    <tr>
-                        <th>Activity</th>
-                        <th>Spoons</th>
-                        <th>Added on</th>
-                    </tr>
-                </table>
-
-            </section>
-
-            <section id="spent-section">
-                <h3>
-                    Spent
-                </h3>
-
-                <table id="spent-table">
-                    <tr>
-                        <th>Activity</th>
-                        <th>Spoons</th>
-                        <th>Added on</th>
-                    </tr>
-                </table>
-
-            </section>
+            <div id="tracker-div">
+                <section id="gained-section">
+                    <h3>
+                        Gained
+                    </h3>
+    
+                    <table id="gained-table">
+                        <tr>
+                            <th>Activity</th>
+                            <th>Spoons</th>
+                            <th>Added on</th>
+                        </tr>
+                    </table>
+    
+                </section>
+    
+                <section id="spent-section">
+                    <h3>
+                        Spent
+                    </h3>
+    
+                    <table id="spent-table">
+                        <tr>
+                            <th>Activity</th>
+                            <th>Spoons</th>
+                            <th>Added on</th>
+                        </tr>
+                    </table>
+    
+                </section>
+            </div>
 
             <section id="balance-section">
                 <h3>
@@ -103,9 +107,9 @@
                 <table id="balance-table">
                     <tr>
                         <th>Spoons gained</th>
-                        <th>-</th>
+                        <th></th>
                         <th>Spoons spent</th>
-                        <th>=</th>
+                        <th></th>
                         <th>Spoon balance</th>
                     </tr>
 
@@ -119,7 +123,9 @@
         </main>
 
         <footer>
-
+            <a href="https://github.com/xurxe/Integrify-14-spoon-balance">
+                by Xurxe Toivo García (2019)
+            </a>
         </footer>
 
         <script src="./js/script.js"></script>

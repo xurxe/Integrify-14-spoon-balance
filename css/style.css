@@ -7,40 +7,53 @@
     padding: 0;
     scroll-behavior: smooth;
     text-decoration: none;
+    font-family: 'Work Sans', sans-serif;
 }
 
+body {
+    background: rgb(145, 145, 145);
+}
 
 
 /* TYPOGRAPHY ************************************************************** */
 
 html {
-    font-size: 20px;
-}
-
-@media only screen and (min-width: 600px) and (max-width: 900px) {
-    html {
-        font-size: calc(16px + (20 - 16) * (100vw - 600px) / (900 - 600));    }
-}
-
-@media only screen and (max-width: 600px) {
-    html {
-        font-size: 16px;
-    }
+    font-size: 18px;
 }
 
 h1 {
-    font-size: 5rem;
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 6rem;
+    font-weight: normal;
     padding: 1rem;
+    text-align: center;
+    color: white;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -o-font-smoothing: antialiased;
 }
 
 h2 {
-    font-size: 1.5rem;
+    font-size: 1.9rem;
+    font-weight: normal;
     padding: 0.5rem 1rem;
+    text-align: center;
+    color: white;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -o-font-smoothing: antialiased;
 }
 
 h3 {
-    font-size: 2rem;
+    font-family: 'Comfortaa', sans-serif;
+    color: rgb(70, 70, 70);
+    font-size: 1.6rem;
     padding: 0.5rem 1rem;
+    text-align: center;
 }
 
 
@@ -49,5 +62,130 @@ h3 {
 
 header {
     padding: 2rem;
+}
+
+
+
+/* MAIN ****************************************************************** */
+
+form {
+    background: white;
+    border-radius: 1rem;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    margin: 1rem 3rem;
+}
+
+fieldset {
+    border: none;
+    margin: 1rem;
+}
+
+input[type="text"] {
+    display: block;
+    font-size: 0.8rem;
+    height: 2rem;
+    margin: 0.5rem 0;
+    padding: 0 0.5rem;
+    width: 100%;
+    color: #919191;
+    border: 1px solid #919191;
+}
+
+.radio-div {
+    display: inline-block;
+    height: 1rem;
+}
+
+input[type="button"] {
+    color: #919191;
+    border: 1px solid #919191;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: block;
+    font-size: 0.8rem;
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+#add-button {
+    height: 2rem;
+    color: white;
+    background: #919191;
+    margin-bottom: 0.5rem;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -o-font-smoothing: antialiased;
+}
+
+#reset-button {
+    height: 1.5rem;
+    color: #919191;
+    border: 1px solid #919191;
+}
+
+#tracker-div {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+#gained-section {
+    background: white;
+    border-radius: 1rem;
+    margin: 1rem 1rem 1rem 3rem;
+    padding: 1rem;
+}
+
+#spent-section {
+    background: white;
+    border-radius: 1rem;
+    margin: 1rem 3rem 1rem 1rem;
+    padding: 1rem;
+}
+
+#balance-section {
+    background: white;
+    border-radius: 1rem;
+    margin: 1rem 3rem;
+    padding: 1rem;
+}
+
+table {
+    margin: 1rem auto;
+}
+
+#gained-table, #spent-table {
+    text-align: left;
+}
+
+#balance-table {
     text-align: center;
+}
+
+th {
+    padding: 0.8rem 1rem;
+}
+
+td {
+    padding: 0.3rem 1rem;
+}
+
+
+/* FOOTER ****************************************************************** */
+
+footer {
+    text-align: center;
+    padding: 3rem;
+}
+
+footer a {
+    color: white;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -o-font-smoothing: antialiased;
 }
