@@ -66,6 +66,42 @@ header {
 
 
 /* INPUT ****************************************************************** */
+#name-div {
+    background: white;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    margin: 1rem 3rem 2rem;
+    padding: 1rem;
+} 
+
+#name-div input[type="text"] {
+    color: #919191;
+    border: 1px solid #919191;
+    font-size: 0.8rem;
+    height: 2rem;
+    margin: 0 1rem;
+    padding: 0 0.5rem;
+    width: 100%;
+}
+
+#name-div input[type="button"] {
+    color: #919191;
+    cursor: pointer;
+    border: 1px solid #919191;
+    height: 2rem;
+    width: 8rem;
+}
+
+#welcome-div {
+    background: white;
+    border-radius: 1rem;
+    color: #919191;
+    font-size: 2rem;
+    text-align: center;
+    margin: 1rem 3rem 2rem;
+    padding: 1rem;
+}
 
 form {
     background: white;
@@ -80,13 +116,13 @@ fieldset {
     margin: 1rem;
 }
 
-input[type="text"] {
+form input[type="text"] {
     color: #919191;
     border: 1px solid #919191;
     display: block;
     font-size: 0.8rem;
     height: 2rem;
-    margin: 0.5rem 0;
+    margin: 0.5rem 0 0;
     padding: 0 0.5rem;
     width: 100%;
 }
@@ -97,13 +133,9 @@ input[type="text"] {
 }
 
 input[type="button"] {
-    color: #919191;
-    cursor: pointer;
-    border: 1px solid #919191;
     border-radius: 0.5rem;
     display: block;
     font-size: 0.8rem;
-    width: 100%;
     -webkit-appearance: none;
     -moz-appearance: none;
 }
@@ -118,12 +150,15 @@ input[type="button"] {
     -moz-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -o-font-smoothing: antialiased;
+    width: 100%;
+
 }
 
-#reset-button {
+#clear-button {
     color: #919191;
     border: 1px solid #919191;
     height: 1.5rem;
+    width: 100%;
 }
 
 

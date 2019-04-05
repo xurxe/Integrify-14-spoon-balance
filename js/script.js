@@ -1,9 +1,7 @@
 /* VARIABLES *************************************************************** */
 
 const spoonieAccount = {
-    firstName: '',
-    middleName: '',
-    lastName: '',
+    name: '',
     gainedTotal: 0,
     spentTotal: 0,
 
@@ -17,10 +15,6 @@ const spoonieAccount = {
         {description: 'Went to work', amount: 60, impact: -1, added: '02/04/2019 17:00'},
         {description: 'Paid bills', amount: 40, impact: -1, added: '02/04/2019 19:00'},
     ],
-
-    spoonieInfo: function() {
-        return `Name: ${this.firstName} ${this.middleName} ${this.lastName}`;
-    },
 
     displayCurrentDateTime: function() {
         var currentDate = new Date();
@@ -37,12 +31,17 @@ const spoonieAccount = {
         return `${day}/${month}/${year} ${hour}:${minute}`
     },
 
-    createEntry: function(description, amount) {
+    createEntry: function(description, amount, impact) {
         entry = {description: description, amount: amount, impact: impact, added: this.displayCurrentDateTime()}
         return entry;
     },
 
-    gainedTotalCalculate: function() {
+    addEntry: function(entry) {
+        this.entries.push(entry);
+        return true;
+    },
+
+    calculateGainedTotal: function() {
         this.gainedTotal = 0;
 
         for (let i = 0; i < this.entries.length; i++) {
@@ -54,7 +53,7 @@ const spoonieAccount = {
         return this.gainedTotal;
     },
 
-    spentTotalCalculate: function() {
+    calculateSpentTotal: function() {
         this.spentTotal = 0;
 
         for (let i = 0; i < this.entries.length; i++) {
@@ -66,7 +65,7 @@ const spoonieAccount = {
         return this.spentTotal;
     },
 
-    balanceCalculate: function() {
+    calculateBalance: function() {
         let balance = this.gainedTotal - this.spentTotal;
         return balance;
     },
@@ -76,10 +75,14 @@ const spoonieAccount = {
 
 /* SELECTORS *************************************************************** */
 
+const nameDiv = document.querySelector('#name-div');
+const nameInput = document.querySelector('#name-input');
+const saveButton = document.querySelector('#save-button');
+
 const descriptionInput = document.querySelector('#description-input');
 const amountInput = document.querySelector('#amount-input');
 const addButton = document.querySelector('#add-button');
-const resetButton = document.querySelector('#reset-button');
+const clearButton = document.querySelector('#clear-button');
 
 const gainedSection = document.querySelector('#gained-section');
 const gainedTable = document.querySelector('#gained-table');
@@ -88,6 +91,7 @@ const spentSection = document.querySelector('#spent-section');
 const spentTable = document.querySelector('#spent-table');
 
 const balanceSection = document.querySelector('#balance-section');
+const balanceTable = document.querySelector('#balance-table');
 const balanceTr = document.querySelector('#balance-tr');
 
 
@@ -102,21 +106,77 @@ function getImpact() {
 
 
 /* EVENT LISTENERS ********************************************************* */
+saveButton.addEventListener('click', function() {
+    if (nameInput.value == '') {
+        nameInput.placeholder = "Please enter your name"
+        return false;
+    }
+
+    else {
+        spoonieAccount.name = nameInput.value;
+        nameDiv.innerHTML = `Welcome, ${spoonieAccount.name}!`;
+        nameDiv.id = 'welcome-div';
+        localStorage.setItem('name', spoonieAccount.name)
+        stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 4);
+        localStorage.setItem = ('entries', stringifiedEntries);
+        return spoonieAccount.name;
+    };
+
+});
+
+
 
 addButton.addEventListener('click', function() {
-    const impact = getImpact();
-
     const description = descriptionInput.value;
     const amount = parseInt(amountInput.value);
+    const impact = getImpact();
+
     let newEntry = spoonieAccount.createEntry(description, amount, impact);
     spoonieAccount.addEntry(newEntry);
 
-    generateTableRow(impact, newEntry);
+    generateTableRow(newEntry);
 
     generateBalance();
 
+    if (localStorage.getItem('name') !== null) {
+        stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
+        localStorage.setItem = ('entries', stringifiedEntries);
+    };
+
     return true;
 });
+
+
+
+clearButton.addEventListener('click', function() {
+    spoonieAccount.entries = [];
+    stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
+    localStorage.setItem = ('entries', stringifiedEntries);
+
+    gainedTable.innerHTML =                         
+    `<tr>
+        <th class="activity-column">Activity</th>
+        <th class="spoons-column">Spoons</th>
+        <th class="recorded-column">Recorded on</th>
+    </tr>`
+
+    spentTable.innerHTML =                         
+    `<tr>
+        <th class="activity-column">Activity</th>
+        <th class="spoons-column">Spoons</th>
+        <th class="recorded-column">Recorded on</th>
+    </tr>`
+
+    balanceTr.innerHTML =
+    `<td>0</td>
+    <td>-</td>
+    <td>0</td>
+    <td>=</td>
+    <td>0</td>`;
+
+    return true;
+});
+
 
 
 
@@ -145,6 +205,8 @@ function generateTableRow(entry) {
         table = document.querySelector('#spent-table');
     };
 
+    console.log(table);
+
     const tableRow = document.createElement('tr');
     table.appendChild(tableRow);
     const tableData = generateTableData(entry);
@@ -156,9 +218,9 @@ function generateTableRow(entry) {
 
 
 function generateBalance() {
-    gainedTotal = spoonieAccount.gainedTotalCalculate();
-    spentTotal = spoonieAccount.spentTotalCalculate();
-    balance = spoonieAccount.balanceCalculate();
+    gainedTotal = spoonieAccount.calculateGainedTotal();
+    spentTotal = spoonieAccount.calculateSpentTotal();
+    balance = spoonieAccount.calculateBalance();
     balanceTr.innerHTML =
     `<td>${gainedTotal}</td>
     <td>-</td>
@@ -169,7 +231,17 @@ function generateBalance() {
 };
 
 
+
 function initialize() {
+    if (localStorage.getItem('name') !== null) {
+        spoonieAccount.entries = JSON.parse(localStorage.getItem('entries'));
+    }
+
+    else {
+        stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
+        localStorage.setItem('entries', stringifiedEntries);
+    }
+
     for (i = 0; i < spoonieAccount.entries.length; i++) {
         generateTableRow(spoonieAccount.entries[i]);
     };
@@ -179,3 +251,5 @@ function initialize() {
 
 initialize();
 
+console.log(localStorage.getItem('name'))
+console.log(localStorage.getItem('entries'))
