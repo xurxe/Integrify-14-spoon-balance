@@ -23,17 +23,19 @@
     <body>
 
         <header>
-            <h1>Spoon Balance</h1>
-            <h2>a&nbsp;spoonie&nbsp;tracker&nbsp;for chronic&nbsp;illness&nbsp;and&nbsp;disability</h2>
+            <h1 class="white-text">Spoon Balance</h1>
+            <h2 class="white-text">a&nbsp;spoonie&nbsp;tracker&nbsp;for chronic&nbsp;illness&nbsp;and&nbsp;disability</h2>
         </header>
 
         <main>
             <div id="name-div">
-                <label for="name-input">
+                <label for="name-input" id='name-input-label'>
                     Enter&nbsp;your&nbsp;name&nbsp;to&nbsp;save&nbsp;your&nbsp;info:
                 </label>
                 <input type="text" id="name-input" name="name-input" placeholder="Name">
-                <input type="button" id="save-button" value="Save">
+                <input type="button" class="white-text" id="save-button" value="Save">
+                <p id="welcome-p"></p>
+                <input type="button" id="forget-button" value="Forget me">
 
             </div>
 
@@ -71,8 +73,8 @@
                 </fieldset>
     
                 <fieldset>
-                    <input type="button" id="add-button" value="Add">
-                    <input type="button" id="clear-button" value="Clear">
+                    <input type="button" class="white-text" id="add-button" value="Add entry">
+                    <input type="button" id="clear-button" value="Clear entries">
                 </fieldset>
             </form>
 
@@ -132,7 +134,7 @@
         </main>
 
         <footer>
-            <a href="https://github.com/xurxe/Integrify-14-spoon-balance">
+            <a class="white-text" href="https://github.com/xurxe/Integrify-14-spoon-balance">
                 by Xurxe Toivo García (2019)
             </a>
         </footer>

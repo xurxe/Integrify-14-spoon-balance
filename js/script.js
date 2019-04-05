@@ -77,7 +77,10 @@ const spoonieAccount = {
 
 const nameDiv = document.querySelector('#name-div');
 const nameInput = document.querySelector('#name-input');
+const nameInputLabel = document.querySelector('#name-input-label');
 const saveButton = document.querySelector('#save-button');
+const welcomeP = document.querySelector('#welcome-p');
+const forgetButton = document.querySelector('#forget-button');
 
 const descriptionInput = document.querySelector('#description-input');
 const amountInput = document.querySelector('#amount-input');
@@ -101,86 +104,9 @@ function getImpact() {
     const impactInput = document.querySelector('input[name="impact-input"]:checked');
     const impact = parseInt(impactInput.value);
     return impact;
-}
+};
 
 
-
-/* EVENT LISTENERS ********************************************************* */
-saveButton.addEventListener('click', function() {
-    if (nameInput.value == '') {
-        nameInput.placeholder = "Please enter your name"
-        return false;
-    }
-
-    else {
-        spoonieAccount.name = nameInput.value;
-        nameDiv.innerHTML = `Welcome, ${spoonieAccount.name}!`;
-        nameDiv.id = 'welcome-div';
-        localStorage.setItem('name', spoonieAccount.name)
-        stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 4);
-        localStorage.setItem = ('entries', stringifiedEntries);
-        return spoonieAccount.name;
-    };
-
-});
-
-
-
-addButton.addEventListener('click', function() {
-    const description = descriptionInput.value;
-    const amount = parseInt(amountInput.value);
-    const impact = getImpact();
-
-    let newEntry = spoonieAccount.createEntry(description, amount, impact);
-    spoonieAccount.addEntry(newEntry);
-
-    generateTableRow(newEntry);
-
-    generateBalance();
-
-    if (localStorage.getItem('name') !== null) {
-        stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
-        localStorage.setItem = ('entries', stringifiedEntries);
-    };
-
-    return true;
-});
-
-
-
-clearButton.addEventListener('click', function() {
-    spoonieAccount.entries = [];
-    stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
-    localStorage.setItem = ('entries', stringifiedEntries);
-
-    gainedTable.innerHTML =                         
-    `<tr>
-        <th class="activity-column">Activity</th>
-        <th class="spoons-column">Spoons</th>
-        <th class="recorded-column">Recorded on</th>
-    </tr>`
-
-    spentTable.innerHTML =                         
-    `<tr>
-        <th class="activity-column">Activity</th>
-        <th class="spoons-column">Spoons</th>
-        <th class="recorded-column">Recorded on</th>
-    </tr>`
-
-    balanceTr.innerHTML =
-    `<td>0</td>
-    <td>-</td>
-    <td>0</td>
-    <td>=</td>
-    <td>0</td>`;
-
-    return true;
-});
-
-
-
-
-/* EXECUTION ************************************************************** */
 
 function generateTableData(entry) {
     tableData =
@@ -204,8 +130,6 @@ function generateTableRow(entry) {
     else if (impact === -1) {
         table = document.querySelector('#spent-table');
     };
-
-    console.log(table);
 
     const tableRow = document.createElement('tr');
     table.appendChild(tableRow);
@@ -232,12 +156,167 @@ function generateBalance() {
 
 
 
-function initialize() {
-    if (localStorage.getItem('name') !== null) {
-        spoonieAccount.entries = JSON.parse(localStorage.getItem('entries'));
+/* EVENT LISTENERS ********************************************************* */
+saveButton.addEventListener('click', function() {
+    if (nameInput.value == '') {
+        nameInput.placeholder = "Please enter your name"
+        return false;
     }
 
     else {
+        spoonieAccount.name = nameInput.value;
+        localStorage.setItem('name', spoonieAccount.name);
+
+        nameInput.style.display = 'none';
+        nameInputLabel.style.display = 'none';
+        saveButton.style.display = 'none';
+
+        welcomeP.innerHTML = `Welcome, ${spoonieAccount.name}!`
+        welcomeP.style.display = 'inline-block';
+        forgetButton.style.display = 'inline-block';
+
+        stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 4);
+        localStorage.setItem('entries', stringifiedEntries);
+        return spoonieAccount.name;
+    };
+
+});
+
+
+
+forgetButton.addEventListener('click', function() {
+    localStorage.clear();
+    spoonieAccount.name = '',
+    spoonieAccount.entries = [
+        {description: 'Good night sleep', amount: 100, impact: 1, added: '01/04/2019 09:00'}, 
+        {description: 'Nap', amount: 10, impact: 1, added: '01/04/2019 15:00'},
+        {description: 'Mediocre night sleep', amount: 60, impact: 1, added: '02/04/2019 08:00'},
+        {description: 'Read favorite book', amount: 15, impact: 1, added: '02/04/2019 20:00'},
+        {description: 'Cooked dinner', amount: 30, impact: -1, added: '01/04/2019 20:00'}, 
+        {description: 'Took shower', amount: 15, impact: -1, added: '01/04/2019 21:00'},
+        {description: 'Went to work', amount: 60, impact: -1, added: '02/04/2019 17:00'},
+        {description: 'Paid bills', amount: 40, impact: -1, added: '02/04/2019 19:00'},
+    ];
+
+    nameInput.style.display = 'inline-block';
+    nameInputLabel.style.display = 'inline-block';
+    saveButton.style.display = 'inline-block';
+
+    nameInput.value = '';
+    descriptionInput.value = '';
+    amountInput.value = '';
+
+    welcomeP.innerHTML = `Welcome, ${spoonieAccount.name}!`
+    welcomeP.style.display = 'none';
+    forgetButton.style.display = 'none';
+
+
+    gainedTable.innerHTML =                         
+    `<tr>
+        <th class="activity-column">Activity</th>
+        <th class="spoons-column">Spoons</th>
+        <th class="recorded-column">Recorded on</th>
+    </tr>`
+
+    spentTable.innerHTML =                         
+    `<tr>
+        <th class="activity-column">Activity</th>
+        <th class="spoons-column">Spoons</th>
+        <th class="recorded-column">Recorded on</th>
+    </tr>`
+
+    balanceTr.innerHTML =
+    `<td>0</td>
+    <td>-</td>
+    <td>0</td>
+    <td>=</td>
+    <td>0</td>`;
+
+    initialize();
+
+});
+
+
+
+
+addButton.addEventListener('click', function() {
+    const description = descriptionInput.value;
+    const amount = parseInt(amountInput.value);
+    const impact = getImpact();
+
+    let newEntry = spoonieAccount.createEntry(description, amount, impact);
+    spoonieAccount.addEntry(newEntry);
+
+    generateTableRow(newEntry);
+
+    generateBalance();
+
+    if (localStorage.getItem('name') !== null) {
+        stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
+        localStorage.setItem('entries', stringifiedEntries);
+    };
+
+    nameInput.value = '';
+    descriptionInput.value = '';
+    amountInput.value = '';
+
+    return true;
+});
+
+
+
+clearButton.addEventListener('click', function() {
+    spoonieAccount.entries = [];
+    stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
+    localStorage.setItem('entries', stringifiedEntries);
+
+    gainedTable.innerHTML =                         
+    `<tr>
+        <th class="activity-column">Activity</th>
+        <th class="spoons-column">Spoons</th>
+        <th class="recorded-column">Recorded on</th>
+    </tr>`
+
+    spentTable.innerHTML =                         
+    `<tr>
+        <th class="activity-column">Activity</th>
+        <th class="spoons-column">Spoons</th>
+        <th class="recorded-column">Recorded on</th>
+    </tr>`
+
+    balanceTr.innerHTML =
+    `<td>0</td>
+    <td>-</td>
+    <td>0</td>
+    <td>=</td>
+    <td>0</td>`;
+
+    return true;
+
+});
+
+
+
+
+/* EXECUTION ************************************************************** */
+
+function initialize() {
+    if (localStorage.getItem('name') != null) {
+        spoonieAccount.name = localStorage.getItem('name');
+
+        nameInput.style.display = 'none';
+        nameInputLabel.style.display = 'none';
+        saveButton.style.display = 'none';
+
+        welcomeP.innerHTML = `Welcome, ${spoonieAccount.name}!`
+        welcomeP.style.display = 'inline-block';
+        forgetButton.style.display = 'inline-block';
+        
+        localStorage.setItem('name', spoonieAccount.name)
+        spoonieAccount.entries = JSON.parse(localStorage.getItem('entries'));
+    }
+
+    else if (localStorage.getItem('name') == null) {
         stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
         localStorage.setItem('entries', stringifiedEntries);
     }
@@ -250,6 +329,3 @@ function initialize() {
 };
 
 initialize();
-
-console.log(localStorage.getItem('name'))
-console.log(localStorage.getItem('entries'))
