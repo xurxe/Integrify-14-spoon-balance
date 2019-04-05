@@ -11,12 +11,14 @@ const spoonieAccount = {
         {description: 'Good night sleep', amount: 100, added: '01/04/2019 09:00'}, 
         {description: 'Nap', amount: 10, added: '01/04/2019 15:00'},
         {description: 'Mediocre night sleep', amount: 60, added: '02/04/2019 08:00'},
+        {description: 'Read favorite book', amount: 15, added: '02/04/2019 20:00'},
     ],
 
     spent: [
         {description: 'Cooked dinner', amount: 30, added: '01/04/2019 20:00'}, 
-        {description: 'Took shower', amount: 10, added: '01/04/2019 21:00'},
+        {description: 'Took shower', amount: 15, added: '01/04/2019 21:00'},
         {description: 'Went to work', amount: 60, added: '02/04/2019 17:00'},
+        {description: 'Paid bills', amount: 40, added: '02/04/2019 19:00'},
     ],
 
     spoonieInfo: function() {
