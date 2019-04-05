@@ -7,18 +7,15 @@ const spoonieAccount = {
     gainedTotal: 0,
     spentTotal: 0,
 
-    gained: [
-        {description: 'Good night sleep', amount: 100, added: '01/04/2019 09:00'}, 
-        {description: 'Nap', amount: 10, added: '01/04/2019 15:00'},
-        {description: 'Mediocre night sleep', amount: 60, added: '02/04/2019 08:00'},
-        {description: 'Read favorite book', amount: 15, added: '02/04/2019 20:00'},
-    ],
-
-    spent: [
-        {description: 'Cooked dinner', amount: 30, added: '01/04/2019 20:00'}, 
-        {description: 'Took shower', amount: 15, added: '01/04/2019 21:00'},
-        {description: 'Went to work', amount: 60, added: '02/04/2019 17:00'},
-        {description: 'Paid bills', amount: 40, added: '02/04/2019 19:00'},
+    entries: [
+        {description: 'Good night sleep', amount: 100, impact: 1, added: '01/04/2019 09:00'}, 
+        {description: 'Nap', amount: 10, impact: 1, added: '01/04/2019 15:00'},
+        {description: 'Mediocre night sleep', amount: 60, impact: 1, added: '02/04/2019 08:00'},
+        {description: 'Read favorite book', amount: 15, impact: 1, added: '02/04/2019 20:00'},
+        {description: 'Cooked dinner', amount: 30, impact: -1, added: '01/04/2019 20:00'}, 
+        {description: 'Took shower', amount: 15, impact: -1, added: '01/04/2019 21:00'},
+        {description: 'Went to work', amount: 60, impact: -1, added: '02/04/2019 17:00'},
+        {description: 'Paid bills', amount: 40, impact: -1, added: '02/04/2019 19:00'},
     ],
 
     spoonieInfo: function() {
@@ -41,33 +38,31 @@ const spoonieAccount = {
     },
 
     createEntry: function(description, amount) {
-        entry = {description: description, amount: amount, added: this.displayCurrentDateTime()}
+        entry = {description: description, amount: amount, impact: impact, added: this.displayCurrentDateTime()}
         return entry;
-    },
-
-    addGained: function(entry) {
-        this.gained.push(entry);
-    },
-
-    addSpent: function(entry) {
-        this.spent.push(entry);
     },
 
     gainedTotalCalculate: function() {
         this.gainedTotal = 0;
 
-        for (let i = 0; i < this.gained.length; i++) {
-            this.gainedTotal += this.gained[i].amount;
-        }
+        for (let i = 0; i < this.entries.length; i++) {
+            if (this.entries[i].impact === 1) {
+                this.gainedTotal += this.entries[i].amount;
+            };
+        };
+
         return this.gainedTotal;
     },
 
     spentTotalCalculate: function() {
         this.spentTotal = 0;
 
-        for (let i = 0; i < this.spent.length; i++) {
-            this.spentTotal += this.spent[i].amount;
-        }
+        for (let i = 0; i < this.entries.length; i++) {
+            if (this.entries[i].impact === -1) {
+                this.spentTotal += this.entries[i].amount;
+            };
+        };
+
         return this.spentTotal;
     },
 
@@ -94,7 +89,6 @@ const spentTable = document.querySelector('#spent-table');
 
 const balanceSection = document.querySelector('#balance-section');
 const balanceTr = document.querySelector('#balance-tr');
-console.log(balanceTr);
 
 
 /* FUNCTIONS *************************************************************** */
@@ -112,18 +106,10 @@ function getImpact() {
 addButton.addEventListener('click', function() {
     const impact = getImpact();
 
-    console.log(impact);
     const description = descriptionInput.value;
     const amount = parseInt(amountInput.value);
-    let newEntry = spoonieAccount.createEntry(description, amount);
-
-    if (impact === 1) {
-        spoonieAccount.addGained(newEntry);
-    }
-
-    else if (impact === -1) {
-        spoonieAccount.addSpent(newEntry);
-    };
+    let newEntry = spoonieAccount.createEntry(description, amount, impact);
+    spoonieAccount.addEntry(newEntry);
 
     generateTableRow(impact, newEntry);
 
@@ -147,8 +133,9 @@ function generateTableData(entry) {
 
 
 
-function generateTableRow(impact, entry) {
+function generateTableRow(entry) {
     let table;
+    let impact = entry.impact;
 
     if (impact === 1) {
         table = document.querySelector('#gained-table');
@@ -183,12 +170,8 @@ function generateBalance() {
 
 
 function initialize() {
-    for (i = 0; i < spoonieAccount.gained.length; i++) {
-        generateTableRow(1, spoonieAccount.gained[i]);
-    };
-
-    for (i = 0; i < spoonieAccount.spent.length; i++) {
-        generateTableRow(-1, spoonieAccount.spent[i]);
+    for (i = 0; i < spoonieAccount.entries.length; i++) {
+        generateTableRow(spoonieAccount.entries[i]);
     };
 
     generateBalance();
