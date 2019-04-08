@@ -205,6 +205,12 @@ td {
     vertical-align: top;
 }
 
+.time-td {
+    font-size: 0.75rem;
+    line-height: 1.3rem;
+    padding-right: 0;
+}
+
 .activity-column {
     width: 100%;
 }
@@ -214,7 +220,7 @@ td {
 }
 
 .recorded-column {
-    min-width: 11rem;
+    min-width: 8.5rem;
 }
 
 .delete-column {

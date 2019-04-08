@@ -116,7 +116,7 @@ function generateTableData(entry) {
     tableData =
     `<td>${entry.description}</td>
     <td>${entry.amount}</td>
-    <td>${entry.added}</td>
+    <td class="time-td">${entry.added}</td>
     <td><button class="delete-button" value=${entry.id} onclick="deleteRow()">&times;</button></td>`;
 
     deleteButtons = document.querySelectorAll('.delete-button');
@@ -265,10 +265,23 @@ forgetButton.addEventListener('click', function() {
 
 
 
-
 addButton.addEventListener('click', function() {
     const description = descriptionInput.value;
+
+    if (description === "") {
+        descriptionInput.value = 'Enter a description';
+        descriptionInput.focus();
+        return false;
+    };
+
     const amount = parseInt(amountInput.value);
+
+    if (isNaN(amount) === true) {
+        amountInput.value = 'Enter a positive number';
+        amountInput.focus();
+        return false;
+    };
+
     const impact = getImpact();
     const id = spoonieAccount.ids[spoonieAccount.ids.length - 1] + 1;
 
