@@ -33,7 +33,7 @@
                     Enter&nbsp;your&nbsp;name&nbsp;to&nbsp;save&nbsp;your&nbsp;info:
                 </label>
                 <input type="text" id="name-input" name="name-input" placeholder="Name">
-                <input type="button" class="white-text" id="save-button" value="Save">
+                <input type="button" id="save-button" value="Save">
                 <p id="welcome-p"></p>
                 <input type="button" id="forget-button" value="Forget me">
 
@@ -44,14 +44,14 @@
                     <label for="description-input">
                         Enter activity description:
                     </label>
-                    <input type="text" id="description-input" name="description-input" placeholder="Laid on a hammock" required>
+                    <input type="text" id="description-input" name="description-input" placeholder="Laid on a hammock" maxlength="25">
                 </fieldset>
     
                 <fieldset id="amount-fieldset">
                     <label for="amount-input">
                         Enter spoon amount:
                     </label>
-                    <input type="text" id="amount-input" name="amount-input" placeholder="10" required>
+                    <input type="text" id="amount-input" name="amount-input" placeholder="10" maxlength="5">
                 </fieldset>
     
                 <fieldset id="impact-fieldset">
@@ -73,7 +73,7 @@
                 </fieldset>
     
                 <fieldset>
-                    <input type="button" class="white-text" id="add-button" value="Add entry">
+                    <input type="button" id="add-button" value="Add entry">
                     <input type="button" id="clear-button" value="Clear entries">
                 </fieldset>
             </form>
@@ -88,7 +88,7 @@
                         <tr>
                             <th class="activity-column">Activity</th>
                             <th class="spoons-column">Spoons</th>
-                            <th class="recorded-column">Recorded on</th>
+                            <th class="recorded-column">Recorded</th>
                             <th></th>
                         </tr>
                     </table>
@@ -104,7 +104,7 @@
                         <tr>
                             <th class="activity-column">Activity</th>
                             <th class="spoons-column">Spoons</th>
-                            <th class="recorded-column">Recorded on</th>
+                            <th class="recorded-column">Recorded</th>
                             <th class="delete-column"></th>
                         </tr>
                     </table>

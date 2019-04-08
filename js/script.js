@@ -5,7 +5,7 @@ const spoonieAccount = {
     gainedTotal: 0,
     spentTotal: 0,
     ids: [1, 2, 3, 4, 5, 6, 7, 8],
-
+    
     entries: [
         {description: 'Good night sleep', amount: 100, impact: 1, added: '01/04/2019 09:00', id: 1}, 
         {description: 'Nap', amount: 10, impact: 1, added: '01/04/2019 15:00', id: 2},
@@ -117,7 +117,7 @@ function generateTableData(entry) {
     `<td>${entry.description}</td>
     <td>${entry.amount}</td>
     <td class="time-td">${entry.added}</td>
-    <td><button class="delete-button" value=${entry.id} onclick="deleteRow()">&times;</button></td>`;
+    <td><button class="delete-button" value=${entry.id} onclick="deleteRowAndEntry()">&times;</button></td>`;
 
     deleteButtons = document.querySelectorAll('.delete-button');
 
@@ -186,7 +186,8 @@ function deleteRowAndEntry() {
 /* EVENT LISTENERS ********************************************************* */
 saveButton.addEventListener('click', function() {
     if (nameInput.value == '') {
-        nameInput.placeholder = "Please enter your name"
+        nameInput.placeholder = "Please enter your name";
+        nameInput.focus();
         return false;
     }
 
@@ -242,14 +243,14 @@ forgetButton.addEventListener('click', function() {
     `<tr>
         <th class="activity-column">Activity</th>
         <th class="spoons-column">Spoons</th>
-        <th class="recorded-column">Recorded on</th>
+        <th class="recorded-column">Recorded</th>
     </tr>`
 
     spentTable.innerHTML =                         
     `<tr>
         <th class="activity-column">Activity</th>
         <th class="spoons-column">Spoons</th>
-        <th class="recorded-column">Recorded on</th>
+        <th class="recorded-column">Recorded</th>
     </tr>`
 
     balanceTr.innerHTML =
@@ -269,7 +270,7 @@ addButton.addEventListener('click', function() {
     const description = descriptionInput.value;
 
     if (description === "") {
-        descriptionInput.value = 'Enter a description';
+        descriptionInput.placeholder = 'Please enter a description';
         descriptionInput.focus();
         return false;
     };
@@ -277,7 +278,7 @@ addButton.addEventListener('click', function() {
     const amount = parseInt(amountInput.value);
 
     if (isNaN(amount) === true) {
-        amountInput.value = 'Enter a positive number';
+        amountInput.placeholder = 'Please enter a positive number';
         amountInput.focus();
         return false;
     };
@@ -315,14 +316,14 @@ clearButton.addEventListener('click', function() {
     `<tr>
         <th class="activity-column">Activity</th>
         <th class="spoons-column">Spoons</th>
-        <th class="recorded-column">Recorded on</th>
+        <th class="recorded-column">Recorded</th>
     </tr>`
 
     spentTable.innerHTML =                         
     `<tr>
         <th class="activity-column">Activity</th>
         <th class="spoons-column">Spoons</th>
-        <th class="recorded-column">Recorded on</th>
+        <th class="recorded-column">Recorded</th>
     </tr>`
 
     balanceTr.innerHTML =

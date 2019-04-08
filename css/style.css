@@ -9,6 +9,10 @@
     text-decoration: none;
 }
 
+*:focus {
+    outline: none;
+}
+
 body {
     background: #919191;
     padding: 3rem;
@@ -72,12 +76,16 @@ header {
 
 /* INPUT ****************************************************************** */
 input[type="text"] {
-    color: #919191;
+    color: black;
     border: 1px solid #919191;
     font-size: 0.8rem;
     height: 2rem;
     padding: 0 0.5rem;
     width: 100%;
+}
+
+input[type="text"]:hover, input[type="text"]:focus {
+    outline: 1.5px solid #919191;
 }
 
 #name-input {
@@ -103,6 +111,12 @@ input[type="button"] {
 
 #save-button {
     background: #919191;
+    color: white;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -o-font-smoothing: antialiased;
     display: inline-block;
     height: 2rem;
 }
@@ -115,6 +129,12 @@ input[type="button"] {
 
 #add-button {
     background: #919191;
+    color: white;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -o-font-smoothing: antialiased;
     display: block;
     height: 2rem;
     margin-bottom: 0.5rem;
@@ -126,6 +146,20 @@ input[type="button"] {
     height: 1.5rem;
 }
 
+#save-button:hover, #add-button:hover, #save-button:focus, #add-button:focus {
+    background: white;
+    border: 2px solid #919191;
+    color: #919191;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: subpixel-antialiased;
+    -o-font-smoothing: subpixel-antialiased;
+}
+
+#forget-button:hover, #clear-button:hover, #forget-button:focus, #clear-button:focus {
+    background: #ebebeb;
+
+} 
 
 
 #name-div {
@@ -154,6 +188,10 @@ fieldset {
 
 #description-fieldset {
     flex-grow: 1;
+}
+
+#amount-fieldset {
+    min-width: 15rem;
 }
 
 .radio-div {
@@ -197,17 +235,18 @@ table {
 }
 
 th {
-    padding: 0.8rem 1rem;
+    padding: 0.8rem 1rem 1.5rem;
+    font-weight: bolder;
 }
 
 td {
-    padding: 0.6rem 1rem;
+    padding: 0.4rem 1rem;
     vertical-align: top;
 }
 
 .time-td {
     font-size: 0.75rem;
-    line-height: 1.3rem;
+    line-height: 1.25rem;
     padding-right: 0;
 }
 
@@ -232,7 +271,7 @@ td {
     color: #919191;
     cursor: pointer;
     display: inline-block;
-    font-size: 2rem;
+    font-size: 1.5rem;
     line-height: 1.15rem;
     padding: 0;
     margin: 0;
@@ -244,4 +283,8 @@ td {
 footer {
     margin: 6rem 0 0;
     text-align: center;
+}
+
+footer a:hover, footer a:focus {
+    color: #ebebeb;
 }
