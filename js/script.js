@@ -4,38 +4,93 @@ const spoonieAccount = {
     name: '',
     gainedTotal: 0,
     spentTotal: 0,
+
+    // this array will contain all the IDs (integers in increments of 1), even of elements that had been deleted, to ensure they're all unique
     ids: [1, 2, 3, 4, 5, 6, 7, 8],
     
+    // this array will contain all the entries (each including an impact multiplier of either 1 or -1)
     entries: [
-        {description: 'Good night sleep', amount: 100, impact: 1, added: '01/04/2019 09:00', id: 1}, 
-        {description: 'Nap', amount: 10, impact: 1, added: '01/04/2019 15:00', id: 2},
-        {description: 'Mediocre night sleep', amount: 60, impact: 1, added: '02/04/2019 08:00', id: 3},
-        {description: 'Read favorite book', amount: 15, impact: 1, added: '02/04/2019 20:00', id: 4},
-        {description: 'Cooked dinner', amount: 30, impact: -1, added: '01/04/2019 20:00', id: 5}, 
-        {description: 'Took shower', amount: 15, impact: -1, added: '01/04/2019 21:00', id: 6},
-        {description: 'Went to work', amount: 60, impact: -1, added: '02/04/2019 17:00', id: 7},
-        {description: 'Paid bills', amount: 40, impact: -1, added: '02/04/2019 19:00', id: 8},
+        {
+            id: 1, 
+            impact: 1, 
+            description: 'Good night sleep', 
+            amount: 100, 
+            added: '01/04/2019 09:00', 
+        }, 
+        {
+            id: 2, 
+            impact: 1, 
+            description: 'Nap', 
+            amount: 10, 
+            added: '01/04/2019 15:00', 
+        },
+        {
+            id: 3, 
+            impact: 1, 
+            description: 'Mediocre night sleep', 
+            amount: 60, 
+            added: '02/04/2019 08:00', 
+        },
+        {
+            id: 4, 
+            impact: 1, 
+            description: 'Read favorite book', 
+            amount: 15, 
+            added: '02/04/2019 20:00', 
+        },
+        {
+            id: 5, 
+            impact: -1, 
+            description: 'Cooked dinner', 
+            amount: 30, 
+            added: '01/04/2019 20:00', 
+        }, 
+        {
+            id: 6, 
+            impact: -1, 
+            description: 'Took shower', 
+            amount: 15, 
+            added: '01/04/2019 21:00', 
+        },
+        {
+            id: 7, 
+            impact: -1, 
+            description: 'Went to work', 
+            amount: 60, 
+            added: '02/04/2019 17:00', 
+        },
+        {
+            id: 8, 
+            impact: -1, 
+            description: 'Paid bills', 
+            amount: 40, 
+            added: '02/04/2019 19:00', 
+        },
     ],
 
+    // this function generates and formats the date at which an entry was created
     displayCurrentDateTime: function() {
         var currentDate = new Date();
-        day = "00" + currentDate.getDate();
-        day = day.substr(-2);
-        month = "00" + (currentDate.getMonth() + 1);
-        month = month.substr(-2);
-        year = "0000" + currentDate.getFullYear();
-        year = year.substr(-4);
-        hour = "00" + currentDate.getHours();
-        hour = hour.substr(-2);
-        minute = "00" + currentDate.getMinutes();
-        minute = minute.substr(-2);
+        day = ("00" + currentDate.getDate()).substr(-2);
+        month = ("00" + (currentDate.getMonth() + 1)).substr(-2);
+        year = ("0000" + currentDate.getFullYear()).substr(-4);
+        hour = ("00" + currentDate.getHours()).substr(-2);
+        minute = ("00" + currentDate.getMinutes()).substr(-2);
+
         return `${day}/${month}/${year} ${hour}:${minute}`
     },
 
-    createEntry: function(description, amount, impact, id) {
-        entry = {description: description, amount: amount, impact: impact, added: this.displayCurrentDateTime(), id: id}
-        this.ids.push(id);
-        console.log(entry);
+    // this function generates entry from given parameters
+    createEntry: function(id, impact, description, amount) {
+
+        entry = {
+            id: id,
+            impact: impact,
+            description: description,
+            amount: amount,
+            added: this.displayCurrentDateTime(),
+        }
+
         return entry;
     },
 
@@ -104,6 +159,7 @@ const balanceTr = document.querySelector('#balance-tr');
 
 /* FUNCTIONS *************************************************************** */
 
+// this function gets the impact multiplier (1 or -1) from the checked radio button
 function getImpact() {
     const impactInput = document.querySelector('input[name="impact-input"]:checked');
     const impact = parseInt(impactInput.value);
@@ -113,12 +169,15 @@ function getImpact() {
 
 
 function generateTableData(entry) {
+    // generate data cells from an entry
+    // note that the delete button gets the entry's ID as a value
     tableData =
     `<td>${entry.description}</td>
     <td>${entry.amount}</td>
     <td class="time-td">${entry.added}</td>
-    <td><button class="delete-button" value=${entry.id} onclick="deleteRowAndEntry()">&times;</button></td>`;
+    <td><button class="delete-button" value=${entry.id}onclick="deleteRowAndEntry()">&times;</button></td>`;
 
+    // update the list of deleteButtons, since a new one was just created
     deleteButtons = document.querySelectorAll('.delete-button');
 
     return tableData;
@@ -127,19 +186,27 @@ function generateTableData(entry) {
 
 
 function generateTableRow(entry) {
-    let table;
-    let impact = entry.impact;
 
-    if (impact === 1) {
+    // declare table variable
+    let table;
+
+    // if impact is 1, select gained table
+    if (entry.impact === 1) {
         table = document.querySelector('#gained-table');
     }
 
-    else if (impact === -1) {
+    // if impact is -1, select spent table
+    else if (entry.impact === -1) {
         table = document.querySelector('#spent-table');
     };
 
+    // create row
     const tableRow = document.createElement('tr');
+
+    // append to table
     table.appendChild(tableRow);
+
+    // generate table data and pass as inner HTML of the row
     const tableData = generateTableData(entry);
     tableRow.innerHTML = tableData;
 
@@ -148,27 +215,21 @@ function generateTableRow(entry) {
 
 
 
-function generateBalance() {
-    gainedTotal = spoonieAccount.calculateGainedTotal();
-    spentTotal = spoonieAccount.calculateSpentTotal();
-    balance = spoonieAccount.calculateBalance();
-    balanceTr.innerHTML =
-    `<td>${gainedTotal}</td>
-    <td>-</td>
-    <td>${spentTotal}</td>
-    <td>=</td>
-    <td>${balance}</td>`;
-    return true;
-};
-
-
-
 function deleteRowAndEntry() {
+
+    // when you click a delete button, its value corresponds to the ID of the associated entry
     const ID = event.target.value;
+
+    // select the button's row
     const row = event.target.parentNode.parentNode;
+
+    // select the button's table
     const table = row.parentNode;
+
+    // remove row from table
     table.removeChild(row);
 
+    // loop through entries array until you find 
     for (let i = 0; i < spoonieAccount.entries.length; i++) {
         if (spoonieAccount.entries[i].id == ID) {
             spoonieAccount.entries.splice(i, 1);
@@ -183,28 +244,59 @@ function deleteRowAndEntry() {
 
 
 
+function generateBalanceRow() {
+    // calculate totals and balance
+    gainedTotal = spoonieAccount.calculateGainedTotal();
+    spentTotal = spoonieAccount.calculateSpentTotal();
+    balance = spoonieAccount.calculateBalance();
+
+    // generate innerHTML for corresponding row in balance table
+    balanceTr.innerHTML =
+    `<td>${gainedTotal}</td>
+    <td>-</td>
+    <td>${spentTotal}</td>
+    <td>=</td>
+    <td>${balance}</td>`;
+    return true;
+};
+
+
+
 /* EVENT LISTENERS ********************************************************* */
+
 saveButton.addEventListener('click', function() {
+    // if name field empty...
     if (nameInput.value == '') {
+        // give feedback in placeholder
         nameInput.placeholder = "Please enter your name";
+
+        // switch focus to name input
         nameInput.focus();
+
+        // terminate without saving
         return false;
     }
 
+    // otherwise...
     else {
+        // save name
         spoonieAccount.name = nameInput.value;
         localStorage.setItem('name', spoonieAccount.name);
 
+        // hide irrelevant elements
         nameInput.style.display = 'none';
         nameInputLabel.style.display = 'none';
         saveButton.style.display = 'none';
 
+        // show relevant elements
         welcomeP.innerHTML = `Welcome, ${spoonieAccount.name}!`
         welcomeP.style.display = 'inline-block';
         forgetButton.style.display = 'inline-block';
 
+        // save entries in local storage
         stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 4);
         localStorage.setItem('entries', stringifiedEntries);
+
         return spoonieAccount.name;
     };
 
@@ -213,32 +305,87 @@ saveButton.addEventListener('click', function() {
 
 
 forgetButton.addEventListener('click', function() {
+    // clear local storage
     localStorage.clear();
-    spoonieAccount.name = '',
-    spoonieAccount.entries = [
-        {description: 'Good night sleep', amount: 100, impact: 1, added: '01/04/2019 09:00'}, 
-        {description: 'Nap', amount: 10, impact: 1, added: '01/04/2019 15:00'},
-        {description: 'Mediocre night sleep', amount: 60, impact: 1, added: '02/04/2019 08:00'},
-        {description: 'Read favorite book', amount: 15, impact: 1, added: '02/04/2019 20:00'},
-        {description: 'Cooked dinner', amount: 30, impact: -1, added: '01/04/2019 20:00'}, 
-        {description: 'Took shower', amount: 15, impact: -1, added: '01/04/2019 21:00'},
-        {description: 'Went to work', amount: 60, impact: -1, added: '02/04/2019 17:00'},
-        {description: 'Paid bills', amount: 40, impact: -1, added: '02/04/2019 19:00'},
-    ];
 
+    // hide irrelevant elements
+    welcomeP.style.display = 'none'
+    welcomeP.style.display = 'none';
+    forgetButton.style.display = 'none';
+
+    // display relevant elements
     nameInput.style.display = 'inline-block';
     nameInputLabel.style.display = 'inline-block';
     saveButton.style.display = 'inline-block';
 
+    // reset input fields
     nameInput.value = '';
     descriptionInput.value = '';
     amountInput.value = '';
 
-    welcomeP.innerHTML = `Welcome, ${spoonieAccount.name}!`
-    welcomeP.style.display = 'none';
-    forgetButton.style.display = 'none';
+    // reset name, ids, and entries
+    spoonieAccount.name = '',
+    spoonieAccount.ids = [1, 2, 3, 4, 5, 6, 7, 8],
+    spoonieAccount.entries = [
+        {
+            id: 1, 
+            impact: 1, 
+            description: 'Good night sleep', 
+            amount: 100, 
+            added: '01/04/2019 09:00', 
+        }, 
+        {
+            id: 2, 
+            impact: 1, 
+            description: 'Nap', 
+            amount: 10, 
+            added: '01/04/2019 15:00', 
+        },
+        {
+            id: 3, 
+            impact: 1, 
+            description: 'Mediocre night sleep', 
+            amount: 60, 
+            added: '02/04/2019 08:00', 
+        },
+        {
+            id: 4, 
+            impact: 1, 
+            description: 'Read favorite book', 
+            amount: 15, 
+            added: '02/04/2019 20:00', 
+        },
+        {
+            id: 5, 
+            impact: -1, 
+            description: 'Cooked dinner', 
+            amount: 30, 
+            added: '01/04/2019 20:00', 
+        }, 
+        {
+            id: 6, 
+            impact: -1, 
+            description: 'Took shower', 
+            amount: 15, 
+            added: '01/04/2019 21:00', 
+        },
+        {
+            id: 7, 
+            impact: -1, 
+            description: 'Went to work', 
+            amount: 60, 
+            added: '02/04/2019 17:00', 
+        },
+        {
+            id: 8, 
+            impact: -1, 
+            description: 'Paid bills', 
+            amount: 40, 
+            added: '02/04/2019 19:00', 
+        },
+    ];
 
-
+    // reset tables
     gainedTable.innerHTML =                         
     `<tr>
         <th class="activity-column">Activity</th>
@@ -260,45 +407,69 @@ forgetButton.addEventListener('click', function() {
     <td>=</td>
     <td>0</td>`;
 
+    // initialize
     initialize();
 
+    return true;
 });
 
 
 
 addButton.addEventListener('click', function() {
+
     const description = descriptionInput.value;
 
+    // if description is empty...
     if (description === "") {
+        // give feedback with the placeholder
         descriptionInput.placeholder = 'Please enter a description';
+
+        // switch focus to field
         descriptionInput.focus();
+
         return false;
     };
 
     const amount = parseInt(amountInput.value);
 
+    // if amount is NaN after parsing it...
     if (isNaN(amount) === true) {
+        // give feedback with the placeholder
         amountInput.placeholder = 'Please enter a positive number';
+
+        // switch focus to field
         amountInput.focus();
         return false;
     };
 
-    const impact = getImpact();
+    // generate next unique id
     const id = spoonieAccount.ids[spoonieAccount.ids.length - 1] + 1;
+    
+    // push id to ids array
+    spoonieAccount.ids.push(id);
 
+    // get impact
+    const impact = getImpact();
+
+    // generate new entry
     let newEntry = spoonieAccount.createEntry(description, amount, impact, id);
+    
+    // add new entry to entries array
     spoonieAccount.addEntry(newEntry);
 
+    // generate new table row
     generateTableRow(newEntry);
 
-    generateBalance();
+    // update balance
+    generateBalanceRow();
 
+    // if the user has saved their name locally, save the updated entry array locally
     if (localStorage.getItem('name') !== null) {
         stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
         localStorage.setItem('entries', stringifiedEntries);
     };
 
-    nameInput.value = '';
+    // clear input fields
     descriptionInput.value = '';
     amountInput.value = '';
 
@@ -308,10 +479,13 @@ addButton.addEventListener('click', function() {
 
 
 clearButton.addEventListener('click', function() {
+
+    // clear entries 
     spoonieAccount.entries = [];
     stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
     localStorage.setItem('entries', stringifiedEntries);
 
+    // clear tables
     gainedTable.innerHTML =                         
     `<tr>
         <th class="activity-column">Activity</th>
@@ -342,33 +516,41 @@ clearButton.addEventListener('click', function() {
 /* EXECUTION ************************************************************** */
 
 function initialize() {
-    if (localStorage.getItem('name') != null) {
-        spoonieAccount.name = localStorage.getItem('name');
 
+    // if the user has saved their name locally
+    if (localStorage.getItem('name') != null) {
+
+        // get name and entries from local storage
+        spoonieAccount.name = localStorage.getItem('name');
+        spoonieAccount.entries = JSON.parse(localStorage.getItem('entries'));
+
+        // hide irrelevant elements
         nameInput.style.display = 'none';
         nameInputLabel.style.display = 'none';
         saveButton.style.display = 'none';
 
+        // display irrelevant elements
         welcomeP.innerHTML = `Hi&nbsp;there,&nbsp;${spoonieAccount.name}! Here are&nbsp;some&nbsp;free&nbsp;spoons:&nbsp;🥄&#xfeff;🥄&#xfeff;🥄`
         welcomeP.style.display = 'inline-block';
-        forgetButton.style.display = 'inline-block';
-        
-        localStorage.setItem('name', spoonieAccount.name)
-        spoonieAccount.entries = JSON.parse(localStorage.getItem('entries'));
+        forgetButton.style.display = 'inline-block';        
     }
 
+    // otherwise, save default entries to local storage
     else if (localStorage.getItem('name') == null) {
         stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
         localStorage.setItem('entries', stringifiedEntries);
     }
 
+    // generate tables
     for (i = 0; i < spoonieAccount.entries.length; i++) {
         generateTableRow(spoonieAccount.entries[i]);
     };
 
+    // select delete buttons
     deleteButtons = document.querySelectorAll('.delete-button');
 
-    generateBalance();
+    // generate balance table
+    generateBalanceRow();
 };
 
 initialize();

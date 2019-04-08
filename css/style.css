@@ -161,7 +161,6 @@ input[type="button"] {
 
 } 
 
-
 #name-div {
     align-items: center;
     display: flex;
@@ -188,10 +187,6 @@ fieldset {
 
 #description-fieldset {
     flex-grow: 1;
-}
-
-#amount-fieldset {
-    min-width: 15rem;
 }
 
 .radio-div {
