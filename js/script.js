@@ -4,16 +4,17 @@ const spoonieAccount = {
     name: '',
     gainedTotal: 0,
     spentTotal: 0,
+    ids: [1, 2, 3, 4, 5, 6, 7, 8],
 
     entries: [
-        {description: 'Good night sleep', amount: 100, impact: 1, added: '01/04/2019 09:00'}, 
-        {description: 'Nap', amount: 10, impact: 1, added: '01/04/2019 15:00'},
-        {description: 'Mediocre night sleep', amount: 60, impact: 1, added: '02/04/2019 08:00'},
-        {description: 'Read favorite book', amount: 15, impact: 1, added: '02/04/2019 20:00'},
-        {description: 'Cooked dinner', amount: 30, impact: -1, added: '01/04/2019 20:00'}, 
-        {description: 'Took shower', amount: 15, impact: -1, added: '01/04/2019 21:00'},
-        {description: 'Went to work', amount: 60, impact: -1, added: '02/04/2019 17:00'},
-        {description: 'Paid bills', amount: 40, impact: -1, added: '02/04/2019 19:00'},
+        {description: 'Good night sleep', amount: 100, impact: 1, added: '01/04/2019 09:00', id: 1}, 
+        {description: 'Nap', amount: 10, impact: 1, added: '01/04/2019 15:00', id: 2},
+        {description: 'Mediocre night sleep', amount: 60, impact: 1, added: '02/04/2019 08:00', id: 3},
+        {description: 'Read favorite book', amount: 15, impact: 1, added: '02/04/2019 20:00', id: 4},
+        {description: 'Cooked dinner', amount: 30, impact: -1, added: '01/04/2019 20:00', id: 5}, 
+        {description: 'Took shower', amount: 15, impact: -1, added: '01/04/2019 21:00', id: 6},
+        {description: 'Went to work', amount: 60, impact: -1, added: '02/04/2019 17:00', id: 7},
+        {description: 'Paid bills', amount: 40, impact: -1, added: '02/04/2019 19:00', id: 8},
     ],
 
     displayCurrentDateTime: function() {
@@ -31,8 +32,10 @@ const spoonieAccount = {
         return `${day}/${month}/${year} ${hour}:${minute}`
     },
 
-    createEntry: function(description, amount, impact) {
-        entry = {description: description, amount: amount, impact: impact, added: this.displayCurrentDateTime()}
+    createEntry: function(description, amount, impact, id) {
+        entry = {description: description, amount: amount, impact: impact, added: this.displayCurrentDateTime(), id: id}
+        this.ids.push(id);
+        console.log(entry);
         return entry;
     },
 
@@ -98,6 +101,7 @@ const balanceTable = document.querySelector('#balance-table');
 const balanceTr = document.querySelector('#balance-tr');
 
 
+
 /* FUNCTIONS *************************************************************** */
 
 function getImpact() {
@@ -112,7 +116,10 @@ function generateTableData(entry) {
     tableData =
     `<td>${entry.description}</td>
     <td>${entry.amount}</td>
-    <td>${entry.added}</td>`;
+    <td>${entry.added}</td>
+    <td><button class="delete-button" value=${entry.id} onclick="deleteRow()">&times;</button></td>`;
+
+    deleteButtons = document.querySelectorAll('.delete-button');
 
     return tableData;
 };
@@ -151,6 +158,26 @@ function generateBalance() {
     <td>${spentTotal}</td>
     <td>=</td>
     <td>${balance}</td>`;
+    return true;
+};
+
+
+
+function deleteRowAndEntry() {
+    const ID = event.target.value;
+    const row = event.target.parentNode.parentNode;
+    const table = row.parentNode;
+    table.removeChild(row);
+
+    for (let i = 0; i < spoonieAccount.entries.length; i++) {
+        if (spoonieAccount.entries[i].id == ID) {
+            spoonieAccount.entries.splice(i, 1);
+        };
+    };
+
+    stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 4);
+    localStorage.setItem('entries', stringifiedEntries);
+
     return true;
 };
 
@@ -243,8 +270,9 @@ addButton.addEventListener('click', function() {
     const description = descriptionInput.value;
     const amount = parseInt(amountInput.value);
     const impact = getImpact();
+    const id = spoonieAccount.ids[spoonieAccount.ids.length - 1] + 1;
 
-    let newEntry = spoonieAccount.createEntry(description, amount, impact);
+    let newEntry = spoonieAccount.createEntry(description, amount, impact, id);
     spoonieAccount.addEntry(newEntry);
 
     generateTableRow(newEntry);
@@ -294,8 +322,7 @@ clearButton.addEventListener('click', function() {
     return true;
 
 });
-
-
+ 
 
 
 /* EXECUTION ************************************************************** */
@@ -308,7 +335,7 @@ function initialize() {
         nameInputLabel.style.display = 'none';
         saveButton.style.display = 'none';
 
-        welcomeP.innerHTML = `Welcome, ${spoonieAccount.name}!`
+        welcomeP.innerHTML = `Hi&nbsp;there,&nbsp;${spoonieAccount.name}! Here are&nbsp;some&nbsp;free&nbsp;spoons:&nbsp;🥄&#xfeff;🥄&#xfeff;🥄`
         welcomeP.style.display = 'inline-block';
         forgetButton.style.display = 'inline-block';
         
@@ -324,6 +351,8 @@ function initialize() {
     for (i = 0; i < spoonieAccount.entries.length; i++) {
         generateTableRow(spoonieAccount.entries[i]);
     };
+
+    deleteButtons = document.querySelectorAll('.delete-button');
 
     generateBalance();
 };

@@ -217,6 +217,21 @@ td {
     min-width: 11rem;
 }
 
+.delete-column {
+    padding: 0.8rem 0;
+}
+
+.delete-button {
+    border: none;
+    color: #919191;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 2rem;
+    line-height: 1.15rem;
+    padding: 0;
+    margin: 0;
+}
+
 
 /* FOOTER ****************************************************************** */
 
