@@ -175,10 +175,7 @@ function generateTableData(entry) {
     `<td>${entry.description}</td>
     <td>${entry.amount}</td>
     <td class="time-td">${entry.added}</td>
-    <td><button class="delete-button" value=${entry.id}onclick="deleteRowAndEntry()">&times;</button></td>`;
-
-    // update the list of deleteButtons, since a new one was just created
-    deleteButtons = document.querySelectorAll('.delete-button');
+    <td><button class="delete-button" value="${entry.id}" onclick="deleteRowAndEntry()">&times;</button></td>`;
 
     return tableData;
 };
@@ -536,9 +533,6 @@ function initialize() {
     for (i = 0; i < spoonieAccount.entries.length; i++) {
         generateTableRow(spoonieAccount.entries[i]);
     };
-
-    // select delete buttons
-    deleteButtons = document.querySelectorAll('.delete-button');
 
     // generate balance table
     generateBalanceRow();
