@@ -262,6 +262,61 @@ function generateBalanceRow() {
 
 
 
+function displayUnsavedName() {
+    nameInput.style.display = 'inline-block';
+    nameInputLabel.style.display = 'inline-block';
+    saveButton.style.display = 'inline-block';
+
+    welcomeP.style.display = 'none'
+    welcomeP.style.display = 'none';
+    forgetButton.style.display = 'none';
+
+    return true;
+};
+
+
+
+function displaySavedName() {
+    nameInput.style.display = 'none';
+    nameInputLabel.style.display = 'none';
+    saveButton.style.display = 'none';
+
+    welcomeP.innerHTML = `Hi&nbsp;there,&nbsp;${spoonieAccount.name}! Here&nbsp;are&nbsp;some&nbsp;free&nbsp;spoons:&nbsp;🥄&#xfeff;🥄&#xfeff;🥄`
+    welcomeP.style.display = 'inline-block';
+    forgetButton.style.display = 'inline-block'; 
+
+    return true;
+};
+
+
+
+function clearTables() {
+    gainedTable.innerHTML =                         
+    `<tr>
+        <th class="activity-column">Activity</th>
+        <th class="spoons-column">Spoons</th>
+        <th class="recorded-column">Recorded</th>
+    </tr>`
+
+    spentTable.innerHTML =                         
+    `<tr>
+        <th class="activity-column">Activity</th>
+        <th class="spoons-column">Spoons</th>
+        <th class="recorded-column">Recorded</th>
+    </tr>`
+
+    balanceTr.innerHTML =
+    `<td>0</td>
+    <td>-</td>
+    <td>0</td>
+    <td>=</td>
+    <td>0</td>`;
+
+    return true;
+}
+
+
+
 /* EVENT LISTENERS ********************************************************* */
 
 saveButton.addEventListener('click', function() {
@@ -283,15 +338,7 @@ saveButton.addEventListener('click', function() {
         spoonieAccount.name = nameInput.value;
         localStorage.setItem('name', spoonieAccount.name);
 
-        // hide irrelevant elements
-        nameInput.style.display = 'none';
-        nameInputLabel.style.display = 'none';
-        saveButton.style.display = 'none';
-
-        // show relevant elements
-        welcomeP.innerHTML = `Welcome, ${spoonieAccount.name}!`
-        welcomeP.style.display = 'inline-block';
-        forgetButton.style.display = 'inline-block';
+        displaySavedName();
 
         // save entries in local storage
         stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 4);
@@ -308,15 +355,7 @@ forgetButton.addEventListener('click', function() {
     // clear local storage
     localStorage.clear();
 
-    // hide irrelevant elements
-    welcomeP.style.display = 'none'
-    welcomeP.style.display = 'none';
-    forgetButton.style.display = 'none';
-
-    // display relevant elements
-    nameInput.style.display = 'inline-block';
-    nameInputLabel.style.display = 'inline-block';
-    saveButton.style.display = 'inline-block';
+    displayUnsavedName();
 
     // reset input fields
     nameInput.value = '';
@@ -385,27 +424,7 @@ forgetButton.addEventListener('click', function() {
         },
     ];
 
-    // reset tables
-    gainedTable.innerHTML =                         
-    `<tr>
-        <th class="activity-column">Activity</th>
-        <th class="spoons-column">Spoons</th>
-        <th class="recorded-column">Recorded</th>
-    </tr>`
-
-    spentTable.innerHTML =                         
-    `<tr>
-        <th class="activity-column">Activity</th>
-        <th class="spoons-column">Spoons</th>
-        <th class="recorded-column">Recorded</th>
-    </tr>`
-
-    balanceTr.innerHTML =
-    `<td>0</td>
-    <td>-</td>
-    <td>0</td>
-    <td>=</td>
-    <td>0</td>`;
+    clearTables();
 
     // initialize
     initialize();
@@ -422,7 +441,7 @@ addButton.addEventListener('click', function() {
     // if description is empty...
     if (description === "") {
         // give feedback with the placeholder
-        descriptionInput.placeholder = 'Please enter a description';
+        descriptionInput.placeholder = 'Hint: description!';
 
         // switch focus to field
         descriptionInput.focus();
@@ -433,9 +452,10 @@ addButton.addEventListener('click', function() {
     const amount = parseInt(amountInput.value);
 
     // if amount is NaN after parsing it...
-    if (isNaN(amount) === true) {
+    if (isNaN(amount) === true || amount < 0) {
         // give feedback with the placeholder
-        amountInput.placeholder = 'Please enter a positive number';
+        amountInput.value = '';
+        amountInput.placeholder = 'Hint: positive number!';
 
         // switch focus to field
         amountInput.focus();
@@ -452,7 +472,7 @@ addButton.addEventListener('click', function() {
     const impact = getImpact();
 
     // generate new entry
-    let newEntry = spoonieAccount.createEntry(description, amount, impact, id);
+    let newEntry = spoonieAccount.createEntry(id, impact, description, amount);
     
     // add new entry to entries array
     spoonieAccount.addEntry(newEntry);
@@ -485,30 +505,9 @@ clearButton.addEventListener('click', function() {
     stringifiedEntries = JSON.stringify(spoonieAccount.entries, undefined, 2);
     localStorage.setItem('entries', stringifiedEntries);
 
-    // clear tables
-    gainedTable.innerHTML =                         
-    `<tr>
-        <th class="activity-column">Activity</th>
-        <th class="spoons-column">Spoons</th>
-        <th class="recorded-column">Recorded</th>
-    </tr>`
-
-    spentTable.innerHTML =                         
-    `<tr>
-        <th class="activity-column">Activity</th>
-        <th class="spoons-column">Spoons</th>
-        <th class="recorded-column">Recorded</th>
-    </tr>`
-
-    balanceTr.innerHTML =
-    `<td>0</td>
-    <td>-</td>
-    <td>0</td>
-    <td>=</td>
-    <td>0</td>`;
+    clearTables();
 
     return true;
-
 });
  
 
@@ -524,15 +523,7 @@ function initialize() {
         spoonieAccount.name = localStorage.getItem('name');
         spoonieAccount.entries = JSON.parse(localStorage.getItem('entries'));
 
-        // hide irrelevant elements
-        nameInput.style.display = 'none';
-        nameInputLabel.style.display = 'none';
-        saveButton.style.display = 'none';
-
-        // display irrelevant elements
-        welcomeP.innerHTML = `Hi&nbsp;there,&nbsp;${spoonieAccount.name}! Here are&nbsp;some&nbsp;free&nbsp;spoons:&nbsp;🥄&#xfeff;🥄&#xfeff;🥄`
-        welcomeP.style.display = 'inline-block';
-        forgetButton.style.display = 'inline-block';        
+        displaySavedName();
     }
 
     // otherwise, save default entries to local storage
